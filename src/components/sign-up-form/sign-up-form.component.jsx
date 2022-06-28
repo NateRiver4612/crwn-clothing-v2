@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import FormInput from '../form-input/form-input.component'
-import { createUserAuthWithEmailAndPassword } from '../../utils/firebase/firebase.utils'
-
+import { createUserAuthWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils'
+import './sign-up-form.styles.scss'
+import Button from '../button/button.component'
 
 const defaultFormField = {
     displayName: '',
@@ -22,16 +23,44 @@ const SignUpForm = () => {
     }
 
 
+    const resetFormFields = () => {
+        setFormFields(defaultFormField);
+    };
+
+
     const handleSubmit = async (event) => {
-        event.preventDefalut();
-        await createUserAuthWithEmailAndPassword(email, password)
+        event.preventDefault();
+
+        if (password !== confirmPassword) {
+            alert("Password do not match")
+            return
+        }
+
+        try {
+
+            const { user } = await createUserAuthWithEmailAndPassword(email, password)
+
+            await createUserDocumentFromAuth(user, { displayName })
+
+            //reset formfiels
+            resetFormFields(defaultFormField)
+
+            alert("Sign up successfully")
+        } catch (error) {
+            if (error.code === 'auth/email-already-in-use') {
+                alert('Cannot create user, email already in use');
+            } else {
+                console.log("Firebase createUserAuthWithEmailAndPassword failed", error)
+            }
+        }
     }
 
 
     return (
-        <div>
-            <h1>Sign up with your email and password</h1>
-            <form onClick={handleSubmit}>
+        <div className='sign-up-container'>
+            <h2>Don't have account </h2>
+            <span>Sign up with your email and password</span>
+            <form onSubmit={handleSubmit}>
                 <FormInput
                     label='Display Name'
                     type='text'
@@ -67,9 +96,10 @@ const SignUpForm = () => {
                     name='confirmPassword'
                     value={confirmPassword}
                 />
-                <button type='submit'>Sign Up</button>
+
+                <Button type='submit'>Sign Up</Button>
             </form>
-        </div>
+        </div >
     )
 }
 
