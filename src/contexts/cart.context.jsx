@@ -6,6 +6,9 @@ export const CartContext = createContext({
     cartItems: [],
     cartItemsCount: 0,
     addItemToCartContext: () => { },
+    clearItemFromCartContext: () => { },
+    removeItemFromCartContext: () => { },
+    cartTotal: 0
 })
 
 const addCartItemHelper = (cartItems, itemToAdd) => {
@@ -41,15 +44,24 @@ const clearCartItemHelper = (cartItems, itemToClear) => {
 }
 
 
+
+
 export const CartProvider = ({ children }) => {
     const [isCartOpen, setCartOpen] = useState(false)
     const [cartItems, setCartItems] = useState([])
     const [cartItemsCount, setItemsCount] = useState(0)
+    const [cartTotal, setCartTotal] = useState(0)
 
     //count cart items every cart items change 
     useEffect(() => {
         const itemsCount = cartItems.reduce((total, item) => item.quantity + total, 0)
         setItemsCount(itemsCount);
+    }, [cartItems])
+
+    //calculate cart total every time cart items change
+    useEffect(() => {
+        const cartTotal = cartItems.reduce((total, item) => total + item.quantity * item.price, 0)
+        setCartTotal(cartTotal)
     }, [cartItems])
 
 
@@ -65,6 +77,8 @@ export const CartProvider = ({ children }) => {
         setCartItems(clearCartItemHelper(cartItems, item))
     }
 
+
+
     const value = {
         isCartOpen,
         setCartOpen,
@@ -72,7 +86,8 @@ export const CartProvider = ({ children }) => {
         cartItems,
         cartItemsCount,
         removeItemFromCartContext,
-        clearItemFromCartContext
+        clearItemFromCartContext,
+        cartTotal
     };
 
     return <CartContext.Provider value={value}>

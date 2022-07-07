@@ -9,7 +9,16 @@ import {
   signOut,
 } from "firebase/auth";
 
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  writeBatch,
+  collection,
+  query,
+  getDocs,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA40c9yeMiCqj1ixTrMWIDsoRpugFhvpFA",
@@ -33,6 +42,45 @@ export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export const db = getFirestore();
+
+export const uploadCollectionAndDocuments = async (collectionKey, data) => {
+  //Using batch to proceed set() inorder to ensure the completion of data
+
+  //create a batch
+  const batch = writeBatch(db);
+
+  //get collection reference
+  const collectionRef = collection(db, collectionKey);
+
+  //handle raw data into firebase
+  data.forEach((object) => {
+    //get document reference
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+
+    console.log(docRef, object);
+
+    //set data to docRef
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+  console.log("update successfully");
+};
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+
+  const categoryMap = querySnapshot.docs.reduce((acc, snapshot) => {
+    const { title, items } = snapshot.data();
+    acc[title] = items;
+    return acc;
+  }, {});
+
+  return categoryMap;
+};
 
 export const createUserDocumentFromAuth = async (
   userAuth,
