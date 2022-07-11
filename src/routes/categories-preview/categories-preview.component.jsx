@@ -4,7 +4,6 @@ import CategoryPreview from '../../components/category-preview/category-preview.
 
 const CategoriesPreview = () => {
     const { products } = useContext(ProductContext)
-    console.log(products)
 
     return (
         <Fragment>
@@ -12,7 +11,7 @@ const CategoriesPreview = () => {
                 Object.keys(products).map((title) => {
                     const data = products[title]
                     return (
-                        <CategoryPreview products={data} title={title}></CategoryPreview>
+                        <CategoryPreview key={title} products={data} title={title}></CategoryPreview>
                     )
 
                 })
