@@ -8,8 +8,6 @@ const Category = () => {
     const { category } = useParams()
     const [categoryItems, setCategoryItems] = useState([])
 
-    console.log(category)
-
     const { products } = useContext(ProductContext)
 
     useEffect(() => {
