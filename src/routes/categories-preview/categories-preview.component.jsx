@@ -14,7 +14,6 @@ const CategoriesPreview = () => {
                     return (
                         <CategoryPreview key={title} products={data} title={title}></CategoryPreview>
                     )
-
                 })
             }
         </Fragment >

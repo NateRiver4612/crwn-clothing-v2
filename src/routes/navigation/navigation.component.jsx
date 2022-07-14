@@ -13,10 +13,11 @@ import {
     NavLinks,
     NavLink,
 } from './navigation.styles';
+import { selectIsCartOpen } from "../../store/cart/cart.selector"
 
 const Navigation = () => {
     const currentUser = useSelector(selectCurrentUser)
-    const { isCartOpen } = useContext(CartContext)
+    const isCartOpen = useSelector(selectIsCartOpen)
 
 
     return (
@@ -31,7 +32,7 @@ const Navigation = () => {
                         SHOP
                     </NavLink>
                     {currentUser ? (
-                        <span className='nav-link' as="span" onClick={signOutUser}>
+                        <span className='nav-link' onClick={signOutUser}>
                             SIGN OUT
                         </span>
                     ) : (

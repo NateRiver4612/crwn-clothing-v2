@@ -1,10 +1,19 @@
-export const selectProducts = (state) => {
-  const productsArray = state.shop.products;
+import { createSelector } from "reselect";
 
-  return productsArray.reduce((acc, product) => {
-    const { title, items } = product;
-    acc[title.toLowerCase()] = items;
+const shopReducer = (state) => state.shop;
 
-    return acc;
-  }, {});
-};
+export const selectProductsArray = createSelector(
+  [shopReducer],
+  (shop) => shop.products
+);
+
+export const selectProducts = createSelector(
+  [selectProductsArray],
+  (productsArray) =>
+    productsArray.reduce((acc, product) => {
+      const { title, items } = product;
+      acc[title.toLowerCase()] = items;
+
+      return acc;
+    }, {})
+);
