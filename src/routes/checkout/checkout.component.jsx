@@ -1,4 +1,3 @@
-import React, { useContext } from 'react';
 import './checkout.styles.scss'
 import CheckoutItem from '../../components/checkout-item/checkout-item.component';
 import { useSelector } from 'react-redux/es/exports';

@@ -17,3 +17,8 @@ export const selectProducts = createSelector(
       return acc;
     }, {})
 );
+
+export const selectProductsIsLoading = createSelector(
+  [shopReducer],
+  (shop) => shop.isLoading
+);

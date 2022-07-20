@@ -37,7 +37,7 @@ const clearCartItemHelper = (cartItems, itemToClear) => {
 
 export const addItemToCartContext = (cartItems, item) => {
   const newCartItems = addCartItemHelper(cartItems, item);
-  console.log(newCartItems);
+
   return createAction(CART_ACTION_TYPES.SET_CART_ITEMS, newCartItems);
 };
 

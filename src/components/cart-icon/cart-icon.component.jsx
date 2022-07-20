@@ -9,8 +9,8 @@ const CartIcon = () => {
     const dispatch = useDispatch()
     const cartCount = useSelector(selectCartCount)
     const isCartOpen = useSelector(selectIsCartOpen)
-    // const { isCartOpen, setCartOpen, cartCount } = useContext(CartContext)
-    console.log(isCartOpen)
+
+
     const toggleCartHandler = () => dispatch(setCartOpen(!isCartOpen))
 
 
