@@ -25,7 +25,7 @@ export function* setSnapShotUserDocumentFromAuth(userAuth, additionalData) {
       userAuth,
       additionalData
     );
-    console.log(userAuth);
+
     yield put(signInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
   } catch (error) {
     yield put(signInFailed(error.message));
