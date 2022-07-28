@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
     useStripe,
-    useElements
+    useElements,
+    CardElement
 } from "@stripe/react-stripe-js";
 import { Form, Card, ButtonPay } from "./payment-form.styles";
-import { async } from "@firebase/util";
-
+import { selectCurrentUser } from "../../store/user/user.seletor";
+import { useSelector } from "react-redux/es/exports";
+import { selectCartTotal } from "../../store/cart/cart.selector";
 
 const cardStyle = {
     style: {
@@ -28,12 +30,18 @@ const cardStyle = {
 
 
 
-
 export const CheckoutForm = () => {
     const stripe = useStripe();
     const elements = useElements();
     const [clientSecret, setClientSecret] = useState('');
     const [processing, setProcessing] = useState('');
+
+    const currentUser = useSelector(selectCurrentUser)
+    const cartTotal = useSelector(selectCartTotal)
+
+    console.log(cartTotal)
+    console.log(currentUser)
+
 
     //set client secret
     useEffect(() => {
@@ -43,10 +51,11 @@ export const CheckoutForm = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ amount: 1000 * 100 })
+                body: JSON.stringify({ amount: cartTotal * 100 })
             }).then((res) => res.json())
 
-            console.log(response)
+            const clientSecret = response.paymentIntent.client_secret
+            setClientSecret(clientSecret)
         }
 
         setClientSecretHelper()
@@ -59,9 +68,26 @@ export const CheckoutForm = () => {
         if (!stripe || !elements) {
             return;
         }
-
         setProcessing(true);
 
+        const payload = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: {
+                card: elements.getElement(CardElement),
+                billing_details: {
+                    name: currentUser ? currentUser.displayName : "Guest"
+                }
+            }
+        })
+
+        if (payload.error) {
+            alert(payload.error.message);
+            setProcessing(false);
+        } else {
+            if (payload.paymentIntent.status === 'succeeded') {
+                alert('Payment Successful!');
+                setProcessing(false)
+            }
+        }
 
     }
 
@@ -70,7 +96,7 @@ export const CheckoutForm = () => {
     return (
         <Form id="payment-form" onSubmit={handleSubmit}>
             <Card id="card-element" options={cardStyle} />
-            <ButtonPay >Pay now</ButtonPay>
+            <ButtonPay processing={processing}>Pay now</ButtonPay>
         </Form>
     );
 }

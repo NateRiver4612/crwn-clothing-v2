@@ -54,3 +54,15 @@ export const clearItemFromCartContext = (cartItems, item) => {
 export const setCartOpen = (isOpen) => {
   return createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, isOpen);
 };
+
+export const checkOutCartStart = () => {
+  return createAction(CART_ACTION_TYPES.CHECK_OUT_CART_START);
+};
+
+export const checkOutCartSuccess = () => {
+  return createAction(CART_ACTION_TYPES.CHECK_OUT_CART_SUCCESS);
+};
+
+export const checkOutCartFailed = (error) => {
+  return createAction(CART_ACTION_TYPES.CHECK_OUT_CART_SUCCESS, error);
+};
