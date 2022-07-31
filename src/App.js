@@ -12,6 +12,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("Hello", checkUserSession());
     dispatch(checkUserSession());
   }, [dispatch]);
 

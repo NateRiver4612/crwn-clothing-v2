@@ -1,15 +1,15 @@
-import { takeLatest, call, put, all } from "redux-saga/effects";
+import { takeLatest, call, put, all } from "typed-redux-saga/macro";
 import PRODUCTS_ACTION_TYPES from "./products.types";
 import { getCategoriesAndDocuments } from "../../utils/firebase/firebase.utils";
 import { setProductsFailed, setProductsSuccess } from "./products.action";
 
 export function* setProductsAsync() {
   try {
-    const data = yield call(getCategoriesAndDocuments);
+    const data = yield* call(getCategoriesAndDocuments);
 
-    yield put(setProductsSuccess(data));
+    yield* put(setProductsSuccess(data));
   } catch (error) {
-    yield put(setProductsFailed(error));
+    yield* put(setProductsFailed(error as Error)); 
   }
 }
 

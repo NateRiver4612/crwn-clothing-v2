@@ -1,6 +1,9 @@
+import { ProductMap } from './products.types';
 import { createSelector } from "reselect";
+import { PRODUCTS_STATE_Type } from "./products.reducer";
+import { RootState } from '../store';
 
-const shopReducer = (state) => state.shop;
+const shopReducer = (state:RootState):PRODUCTS_STATE_Type => state.shop;
 
 export const selectProductsArray = createSelector(
   [shopReducer],
@@ -15,7 +18,7 @@ export const selectProducts = createSelector(
       acc[title.toLowerCase()] = items;
 
       return acc;
-    }, {})
+    }, {} as ProductMap)
 );
 
 export const selectProductsIsLoading = createSelector(

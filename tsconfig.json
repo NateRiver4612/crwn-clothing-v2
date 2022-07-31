@@ -1,7 +1,10 @@
 {
     "compilerOptions": {
         "target": "es5",
+        "allowSyntheticDefaultImports": true,
         "lib": [
+            "es5",
+            "es6",
             "dom",
             "dom.iterable",
             "esnext"
@@ -9,7 +12,7 @@
         "allowJs": true,
         "skipLibCheck": true,
         "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
@@ -21,6 +24,7 @@
         "jsx": "react-jsx"
     },
     "include": [
-        "src"
+        "src",
+        "src/custom.d.ts"
     ]
 }
