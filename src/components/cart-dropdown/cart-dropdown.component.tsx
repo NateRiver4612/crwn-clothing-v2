@@ -1,4 +1,3 @@
-import React, { } from 'react';
 import { useSelector } from 'react-redux';
 import Button from '../button/button.component';
 import './cart-dropdown.styles.jsx';

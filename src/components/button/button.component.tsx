@@ -1,4 +1,4 @@
-import {FC} from 'react'
+import {ButtonHTMLAttributes, FC} from 'react'
 
 import {
     BaseButton,
@@ -20,13 +20,13 @@ const getButton = (buttonType = BUTTON_TYPE_CLASSES.base): typeof BaseButton =>
     [BUTTON_TYPE_CLASSES.inverted]: InvertedButton,
 }[buttonType]);
 
-export type ButtonProps = {
+export type ButtonProps_Type = {
     processing?: boolean,
     buttonType?: BUTTON_TYPE_CLASSES,
-    children: React.ReactNode
-}   
+    children: React.ReactNode,
+} & ButtonHTMLAttributes<HTMLButtonElement>  
 
-const Button: FC<ButtonProps> = ({ children, processing = false, buttonType, ...otherProps }) => {
+const Button: FC<ButtonProps_Type> = ({ children, processing = false, buttonType, ...otherProps }) => {
     const CustomButton = getButton(buttonType);
 
     return (
